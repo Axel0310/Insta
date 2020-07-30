@@ -2,36 +2,28 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import UserContext from "../Auth/UserContext";
 import apiHandler from "../../api/apiHandler";
+import "../../styles/profileForm.css";
 
 class FormSignup extends Component {
   static contextType = UserContext;
 
   state = {
+    name: "",
     email: "",
     password: "",
   };
 
   handleChange = (event) => {
-    const value =
-      event.target.type === "file"
-        ? event.target.files[0]
-        : event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-
-    const key = event.target.name;
-
-    this.setState({ [key]: value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-
     apiHandler
       .signup(this.state)
       .then((data) => {
         this.context.setUser(data);
-        this.props.history.push("/");
+        this.props.history.push("/home");
       })
       .catch((error) => {
         console.log(error);
@@ -40,12 +32,41 @@ class FormSignup extends Component {
 
   render() {
     return (
-      <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" />
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
-        <button>Submit</button>
+      <form
+        className="profile-form"
+        onSubmit={this.handleSubmit}
+        onChange={this.handleChange}
+      >
+        <h2 className="form-title">Create your account</h2>
+        <div className="field">
+          <p className="control has-icons-left has-icons-right">
+            <input className="input" type="text" placeholder="Name" name="name"/>
+            <span className="icon is-small is-left">
+              <i className="fas fa-user"></i>
+            </span>
+          </p>
+        </div>
+        <div className="field">
+          <p className="control has-icons-left has-icons-right">
+            <input className="input" type="email" placeholder="Email" name="email"/>
+            <span className="icon is-small is-left">
+              <i className="fas fa-envelope"></i>
+            </span>
+          </p>
+        </div>
+        <div className="field">
+          <p className="control has-icons-left">
+            <input className="input" type="password" placeholder="Password" name="password"/>
+            <span className="icon is-small is-left">
+              <i className="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+        <div className="field">
+          <p className="control">
+            <button className="button is-success">Sign up</button>
+          </p>
+        </div>
       </form>
     );
   }

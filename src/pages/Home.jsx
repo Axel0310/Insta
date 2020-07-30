@@ -1,9 +1,10 @@
 import React from "react";
+import BottomNavBar from "../components/BottomNavBar";
 
 const Home = (props) => {
   return (
     <div>
-      <h1>Home Page ∆</h1>
+      <BottomNavBar />
     </div>
   );
 };

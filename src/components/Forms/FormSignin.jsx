@@ -13,17 +13,7 @@ class FormSignin extends Component {
   };
 
   handleChange = (event) => {
-    const key = event.target.name;
-
-    // You can test more if you have to handle different sorts of inputs.
-    const value =
-      event.target.type === "file"
-        ? event.target.files[0]
-        : event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-
-    this.setState({ [key]: value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = (event) => {
@@ -33,22 +23,42 @@ class FormSignin extends Component {
       .signin(this.state)
       .then((data) => {
         this.context.setUser(data);
-        this.props.history.push("/");
+        this.props.history.push("/home");
       })
       .catch((error) => {
         console.log(error);
-        // Display error message here, if you set the state
       });
   };
 
   render() {
     return (
-      <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" />
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
-        <button>Submit</button>
+      <form
+        className="profile-form"
+        onSubmit={this.handleSubmit}
+        onChange={this.handleChange}
+      >
+        <h2 className="form-title">Sign in</h2>
+        <div className="field">
+          <p className="control has-icons-left has-icons-right">
+            <input className="input" type="email" placeholder="Email" name="email"/>
+            <span className="icon is-small is-left">
+              <i className="fas fa-envelope"></i>
+            </span>
+          </p>
+        </div>
+        <div className="field">
+          <p className="control has-icons-left">
+            <input className="input" type="password" placeholder="Password" name="password"/>
+            <span className="icon is-small is-left">
+              <i className="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+        <div className="field">
+          <p className="control">
+            <button className="button is-success">Validate</button>
+          </p>
+        </div>
       </form>
     );
   }

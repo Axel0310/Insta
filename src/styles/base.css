@@ -1,0 +1,24 @@
+@font-face {
+    font-family: sweetSensation;
+    src: url("/fonts/sweetSensation.ttf");
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 10px;
+}
+
+h1{
+    font-family: sweetSensation;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}

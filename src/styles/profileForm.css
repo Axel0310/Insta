@@ -1,0 +1,17 @@
+.profile-form {
+    background-color: rgba(95, 71, 102, 0.849);
+    padding: 20px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: whitesmoke;
+}
+
+.profile-form .form-title{
+    font-size: 1.6em;
+    margin-bottom: 15px;
+}

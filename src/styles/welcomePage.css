@@ -1,0 +1,35 @@
+.intro-wrapper{
+    font-size: 1.2em;
+    text-align: center;
+    width: 90%;
+    color: whitesmoke;
+}
+
+.title {
+    font-size: 8em;
+    text-shadow: 1px 1px red;
+    color: whitesmoke;
+    margin-bottom: 20px;
+}
+
+.welcome-page {
+    width: 100vw;
+    height: 100vh;
+    background: url("/media/welcome_page_bg.jpg") center / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-menu{
+    font-size: 2em;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: whitesmoke
+}
+
+.auth-menu a:first-child {
+    margin-right: 10px;
+}
