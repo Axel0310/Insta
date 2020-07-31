@@ -44,9 +44,9 @@ export default {
       .catch(errorHandler);
   },
 
-  getItems() {
+  getImage(imageId) {
     return service
-      .get("/api/items")
+      .get(`/api/images/${imageId}`)
       .then((res) => res.data)
       .catch(errorHandler);
   },

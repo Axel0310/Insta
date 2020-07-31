@@ -6,6 +6,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchIcon from "@material-ui/icons/Search";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import PersonIcon from '@material-ui/icons/Person';
 import { withUser } from "../components/Auth/withUser";
 
 const useStyles = makeStyles({
@@ -17,6 +18,7 @@ const useStyles = makeStyles({
   },
   profilePic: {
     borderRadius: "50%",
+    width: "1em"
   },
 });
 
@@ -54,7 +56,7 @@ function LabelBottomNavigation(props) {
       <BottomNavigationAction
         label="Profile"
         value="profile"
-        icon={<img src={user.profilePicture} />}
+        icon={user ? <img src={user.profilePicture}/> : <PersonIcon />}
         className={classes.profilePic}
       />
     </BottomNavigation>

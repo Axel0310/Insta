@@ -1,0 +1,23 @@
+.header {
+    height: 7vh;
+    background-color: rgb(132, 210, 255);
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.header .title{
+    font-size: 3em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.header .chat-link{
+    font-size: 2.5em;
+    position: absolute;
+    right: 2%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: whitesmoke;
+}
