@@ -24,3 +24,12 @@ a{
     text-decoration: none;
     color: inherit;
 }
+
+#content {
+    padding-bottom: 50px;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}

@@ -6,19 +6,23 @@ import HomeIcon from "@material-ui/icons/Home";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchIcon from "@material-ui/icons/Search";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import PersonIcon from '@material-ui/icons/Person';
+import Avatar from '@material-ui/core/Avatar';
 import { withUser } from "../components/Auth/withUser";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  fixedBottom: {
+  root: {
     position: "fixed",
     bottom: 0,
     left: 0,
     width: "100%",
+    "& .MuiBottomNavigationAction-root":{
+      minWidth: 60
+    }
   },
   profilePic: {
     borderRadius: "50%",
-    width: "1em"
+    width: "2em",
   },
 });
 
@@ -35,9 +39,17 @@ function LabelBottomNavigation(props) {
     <BottomNavigation
       value={value}
       onChange={handleChange}
-      className={classes.fixedBottom}
+      className={classes.root}
     >
-      <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
+      <BottomNavigationAction
+        label="Home"
+        value="home"
+        icon={
+          <Link to="/home">
+            <HomeIcon />
+          </Link>
+        }
+      />
       <BottomNavigationAction
         label="Search"
         value="search"
@@ -46,7 +58,11 @@ function LabelBottomNavigation(props) {
       <BottomNavigationAction
         label="Upload"
         value="upload"
-        icon={<AddBoxIcon />}
+        icon={
+          <Link to="/image/upload">
+            <AddBoxIcon />
+          </Link>
+        }
       />
       <BottomNavigationAction
         label="Favorites"
@@ -56,8 +72,8 @@ function LabelBottomNavigation(props) {
       <BottomNavigationAction
         label="Profile"
         value="profile"
-        icon={user ? <img src={user.profilePicture}/> : <PersonIcon />}
-        className={classes.profilePic}
+        // icon={user ? <img src={user.profilePicture} className={classes.profilePic}/> : <PersonIcon />}
+        icon={<Avatar alt="Profil" src={user.profilePicture}/>}
       />
     </BottomNavigation>
   );

@@ -17,9 +17,9 @@ const useStyles = makeStyles({
     },
   },
   formTitle: {
-      fontSize: "1.8em",
-      fontWeight: "bolder"
-  }
+    fontSize: "1.8em",
+    fontWeight: "bolder",
+  },
 });
 
 const ImageForm = (props) => {
@@ -34,16 +34,38 @@ const ImageForm = (props) => {
 
   useEffect(() => {
     if (mode === "edit") {
-      apiHandler.getImage(imageId).then((image) => {
-        setTempUrl(image.url);
-        setDescription(image.description);
-      });
+      apiHandler
+        .getImage(imageId)
+        .then((image) => {
+          setTempUrl(image.url);
+          setDescription(image.description);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
   }, []);
 
   const handleUpload = (evt) => {
     setTempUrl(URL.createObjectURL(evt.target.files[0]));
     setImage(evt.target.files[0]);
+  };
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    const fd = new FormData();
+    fd.append("image", image);
+    fd.append("description", description);
+
+    apiHandler
+      .uploadImage(fd)
+      .then((image) => {
+        console.log(image);
+        props.history.push("/home");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
@@ -66,6 +88,7 @@ const ImageForm = (props) => {
         color="primary"
         className={classes.button}
         endIcon={<DoneIcon />}
+        onClick={handleSubmit}
       >
         Send
       </Button>

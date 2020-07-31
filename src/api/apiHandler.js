@@ -50,4 +50,18 @@ export default {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+
+  getAllImages() {
+    return service
+      .get("/api/images")
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  uploadImage(formInput) {
+    return service
+      .post(`/api/images`, formInput)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
 };

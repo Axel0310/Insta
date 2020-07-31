@@ -1,18 +1,27 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
+  imageInputWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  imageMini: {
+      maxWidth: "100%",
+      maxHeight: "50vh"
+  }
 }));
 
-export default function ImageInput({clbk, tempUrl}) {
+export default function ImageInput({ clbk, tempUrl }) {
   const classes = useStyles();
   return (
-    <div>
+    <div className={classes.imageInputWrapper}>
       <input
         accept="image/*"
         className={classes.input}
@@ -20,13 +29,19 @@ export default function ImageInput({clbk, tempUrl}) {
         multiple
         type="file"
         onChange={clbk}
+        required
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+        <Button
+          variant="contained"
+          color="primary"
+          component="span"
+          startIcon={<CloudUploadIcon />}
+        >
           Upload
         </Button>
       </label>
-      {tempUrl && <img src={tempUrl} alt="Upload"/>}
+      {tempUrl && <img src={tempUrl} alt="Upload" className={classes.imageMini} />}
     </div>
   );
 }

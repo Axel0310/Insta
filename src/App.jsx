@@ -13,20 +13,25 @@ import { withUser } from "./components/Auth/withUser";
 
 function App(props) {
   const { user } = props.context;
-  console.log(user)
   return (
-    <div className="App">
-      {user && <Header/>}
-      <Switch>
-        <Route exact path="/" component={WelcomePage} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/auth/signin" component={Signin} />
-        <Route exact path="/auth/signup" component={Signup} />
-        <Route exact path="/image/:mode(upload|edit)/:id?" component={ImageForm}/>
-        <ProtectedRoute exact path="/profile" component={Profile} />
-      </Switch>
+    <React.Fragment>
+      {user && <Header />}
+      <main id="content">
+        <Switch>
+          <Route exact path="/" component={WelcomePage} />
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/auth/signin" component={Signin} />
+          <Route exact path="/auth/signup" component={Signup} />
+          <Route
+            exact
+            path="/image/:mode(upload|edit)/:id?"
+            component={ImageForm}
+          />
+          <ProtectedRoute exact path="/profile" component={Profile} />
+        </Switch>
+      </main>
       {user && <BottomNavBar />}
-    </div>
+    </React.Fragment>
   );
 }
 
