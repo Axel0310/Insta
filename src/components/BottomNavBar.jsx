@@ -72,8 +72,7 @@ function LabelBottomNavigation(props) {
       <BottomNavigationAction
         label="Profile"
         value="profile"
-        // icon={user ? <img src={user.profilePicture} className={classes.profilePic}/> : <PersonIcon />}
-        icon={<Avatar alt="Profil" src={user.profilePicture}/>}
+        icon={<Link to={`/profile/${user._id}`}><Avatar alt="Profil" src={user.profilePicture}/></Link>}
       />
     </BottomNavigation>
   );

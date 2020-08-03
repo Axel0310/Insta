@@ -22,13 +22,7 @@ import UserContext from "./UserContext";
 // ----------------^ your component now has access to the user context defined in UserProvider.jsx.
 
 export const withUser = (ComponentToPassUserContextTo) => {
-  // const user = {
-  //   _id: "5f22dd401e71f82833a65c0f",
-  //   profilePicture:
-  //     "https://res.cloudinary.com/direuudpy/image/upload/v1596033402/insta/profile_picture_default_tzqyoh.jpg",
-  //   email: "axel@gmail.com",
-  //   name: "Axel",
-  // };
+
   return function (props) {
     return (
       <UserContext.Consumer>

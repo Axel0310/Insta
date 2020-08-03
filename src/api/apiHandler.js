@@ -64,4 +64,25 @@ export default {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+
+  getUser(userId) {
+    return service
+      .get(`/api/users/${userId}`)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  updateUser(inputs) {
+    return service
+      .patch(`/api/users`, inputs)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  updateSubs(connectedUserId, profileUserId){
+    return service
+    .patch("/api/users/follow", {connectedUserId: connectedUserId, profileUserId: profileUserId})
+    .then( res => res.data)
+    .catch(errorHandler);
+  }
 };
