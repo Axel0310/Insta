@@ -53,19 +53,29 @@ const ImageForm = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    const fd = new FormData();
-    fd.append("image", image);
-    fd.append("description", description);
 
-    apiHandler
-      .uploadImage(fd)
-      .then((image) => {
-        console.log(image);
-        props.history.push("/home");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    if (mode === "upload") {
+      const fd = new FormData();
+      fd.append("description", description);
+      fd.append("image", image);
+      apiHandler
+        .uploadImage(fd)
+        .then((image) => {
+          props.history.push("/home");
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else if (mode === "edit") {
+      apiHandler
+        .updateImage(imageId, {description: description})
+        .then((image) => {
+          props.history.push("/home");
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
   };
 
   return (
@@ -73,7 +83,11 @@ const ImageForm = (props) => {
       <h2 className={classes.formTitle}>
         {mode === "upload" ? "Upload an image" : "Edit image"}
       </h2>
-      <ImageInput tempUrl={tempUrl} clbk={handleUpload} />
+      <ImageInput
+        tempUrl={tempUrl}
+        clbk={handleUpload}
+        isDisabled={mode === "edit"}
+      />
       <TextField
         id="outlined-multiline-static"
         label="Description"

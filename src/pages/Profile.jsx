@@ -3,26 +3,38 @@ import apiHandler from "../api/apiHandler";
 import ProfilActions from "../components/ProfileActions";
 import { withUser } from "../components/Auth/withUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Link } from "react-router-dom";
 import "../styles/profile.css";
 
-const Profile = (props) => {
+const Profile = ({context, match, history}) => {
   const [profileUser, setProfileUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  const connectedUser = props.context.user;
+  const connectedUser = context.user;
 
   useEffect(() => {
-    apiHandler.getUser(props.match.params.id).then((fetchedUser) => {
+    apiHandler.getUser(match.params.id).then((fetchedUser) => {
       setProfileUser(fetchedUser);
       setIsLoading(false);
     });
-  }, []);
+  }, [match]);
 
   const handleFollow = async () => {
     const { updatedConnectedUser, updatedProfileUser} = await apiHandler.updateSubs(connectedUser._id, profileUser._id);
     setProfileUser(updatedProfileUser);
-    props.context.setUser(updatedConnectedUser);
+    context.setUser(updatedConnectedUser);
   };
+
+  const handleSignOut = () => {
+    apiHandler.logout()
+    .then( res => {
+      context.removeUser();
+      history.push("/");
+    })
+    .catch( error => {
+      console.log(error)
+    })
+  }
 
   if (isLoading) return <CircularProgress />;
   return (
@@ -53,11 +65,13 @@ const Profile = (props) => {
           </div>
         </div>
         <p className="user-description">{profileUser.description}</p>
-        <ProfilActions profileUser={profileUser} clbkFollow={handleFollow} />
+        <ProfilActions profileUser={profileUser} clbkFollow={handleFollow} clbkSignOut={handleSignOut}/>
       </section>
       <section className="user-images">
         {profileUser.images.map((image) => (
-          <img key={image._id} src={image.url} alt="Publication" className="publication" />
+          <Link to={`/profile/images/${match.params.id}`} key={image._id}>
+          <img src={image.url} alt="Publication" className="publication" />
+          </Link>
         ))}
       </section>
     </React.Fragment>

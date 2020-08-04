@@ -58,9 +58,30 @@ export default {
       .catch(errorHandler);
   },
 
+  getProfileImages(userId) {
+    return service
+      .get(`/api/images/profile/${userId}`)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
   uploadImage(formInput) {
     return service
       .post(`/api/images`, formInput)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  updateImage(imgId, formInput) {
+    return service
+      .patch(`/api/images/${imgId}`, formInput)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  deleteImage(imgId) {
+    return service
+      .delete(`/api/images/${imgId}`)
       .then((res) => res.data)
       .catch(errorHandler);
   },

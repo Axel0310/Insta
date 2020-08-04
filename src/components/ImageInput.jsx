@@ -15,10 +15,13 @@ const useStyles = makeStyles((theme) => ({
   imageMini: {
       maxWidth: "100%",
       maxHeight: "50vh"
+  },
+  hidden:{
+    display: "none"
   }
 }));
 
-export default function ImageInput({ clbk, tempUrl }) {
+export default function ImageInput({ clbk, tempUrl, isDisabled }) {
   const classes = useStyles();
   return (
     <div className={classes.imageInputWrapper}>
@@ -31,7 +34,7 @@ export default function ImageInput({ clbk, tempUrl }) {
         onChange={clbk}
         required
       />
-      <label htmlFor="contained-button-file">
+      <label htmlFor="contained-button-file" className={isDisabled ? classes.hidden : undefined}>
         <Button
           variant="contained"
           color="primary"

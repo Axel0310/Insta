@@ -2,13 +2,14 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { withUser } from "../components/Auth/withUser";
 import { Link } from "react-router-dom";
+import "../api/apiHandler";
+import apiHandler from "../api/apiHandler";
 //css is included in profile.css
 
-function ProfileActions({ profileUser, context, clbkFollow }) {
-
+function ProfileActions({ profileUser, context, clbkFollow, clbkSignOut }) {
   const connectedUser = context.user;
   // console.log(connectedUser)
-  const isFollowed = connectedUser.subscriptions.includes(profileUser._id)
+  const isFollowed = connectedUser.subscriptions.includes(profileUser._id);
 
   // const isFollowed = profileUser.followers.includes(connectedUser._id)
 
@@ -23,11 +24,10 @@ function ProfileActions({ profileUser, context, clbkFollow }) {
           Edit profile
         </Button>
       </Link>
-      <Link to="/signout">
-        <Button variant="outlined" color="primary">
-          Sign out
-        </Button>
-      </Link>
+
+      <Button variant="outlined" color="primary" onClick={clbkSignOut}>
+        Sign out
+      </Button>
     </React.Fragment>
   );
 

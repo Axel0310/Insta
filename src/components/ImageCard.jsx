@@ -14,6 +14,15 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { withUser } from "../components/Auth/withUser";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuList from "@material-ui/core/MenuList";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -36,25 +45,107 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageCard({image}) {
-  const {creator, description, url} = image;
+function ImageCard({ image, context, clbkDelete }) {
+  const { creator, description, url } = image;
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const handleMenuToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleMenuClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
+  const handleDelete = () => {
+    clbkDelete(image._id)
+  }
+
+  const imageActionBtn = (
+    <React.Fragment>
+      <IconButton
+        ref={anchorRef}
+        aria-controls={open ? "menu-list-grow" : undefined}
+        aria-haspopup="true"
+        onClick={handleMenuToggle}
+      >
+        <MoreVertIcon />
+      </IconButton>
+      <Popper
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === "bottom" ? "center top" : "center bottom",
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleMenuClose}>
+                <MenuList
+                  autoFocusItem={open}
+                  id="menu-list-grow"
+                  onKeyDown={handleListKeyDown}
+                >
+                  <MenuItem onClick={handleMenuClose}>
+                    <Link to={`/image/edit/${image._id}`}>Edit</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </React.Fragment>
+  );
+
+  const imageIsFromConnectedUser = context.user.images.includes(image._id);
+
   return (
     <Card className={classes.root}>
       <CardHeader
-        avatar={<Avatar src={creator.profilePicture} />}
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+        avatar={
+          <Link to={`/profile/${creator._id}`}>
+            <Avatar src={creator.profilePicture} />
+          </Link>
         }
-        title={creator.name}
+        action={imageIsFromConnectedUser && imageActionBtn}
+        title={<Link to={`/profile/${creator._id}`}>{creator.name}</Link>}
       />
       <CardMedia className={classes.media} image={url} />
       <CardContent>
@@ -67,7 +158,6 @@ export default function ImageCard({image}) {
           <FavoriteIcon />
         </IconButton>
       </CardActions>
-
 
       {/* Uncomment to implement display of image comments */}
 
@@ -89,3 +179,5 @@ export default function ImageCard({image}) {
     </Card>
   );
 }
+
+export default withUser(ImageCard);
