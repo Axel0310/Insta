@@ -38,7 +38,7 @@ class FormSignup extends Component {
         onSubmit={this.handleSubmit}
         onChange={this.handleChange}
       >
-        <h2 className="form-title">Create your account</h2>
+        <h2 className="form-title">Sign up</h2>
         <div className="field">
           <p className="control has-icons-left has-icons-right">
             <input className="input" type="text" placeholder="Name" name="name"/>
@@ -65,7 +65,7 @@ class FormSignup extends Component {
         </div>
         <div className="field">
           <p className="control">
-            <button className="button is-success">Sign up</button>
+            <button className="button">Validate</button>
           </p>
         </div>
         <p>Already have an account ? <Link to="/auth/signin">Sign in</Link> </p>

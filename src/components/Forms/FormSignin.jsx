@@ -57,7 +57,7 @@ class FormSignin extends Component {
         </div>
         <div className="field">
           <p className="control">
-            <button className="button is-success">Validate</button>
+            <button className="button">Validate</button>
           </p>
         </div>
         <p>Don't have an account yet ? <Link to="/auth/signup">Sign up</Link> </p>

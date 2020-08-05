@@ -4,7 +4,7 @@ import FormSignup from "../components/Forms/FormSignup";
 const Signup = (props) => {
   return (
     <div className="welcome-page">
-    <h1 className="title">Awesome</h1>
+    <h1 className="title">Pics-art</h1>
       <FormSignup />
     </div>
   );

@@ -3,12 +3,15 @@
     text-align: center;
     width: 90%;
     color: whitesmoke;
+    /* border: 1px solid rgb(106, 38, 138);
+    background-color: rgba(97, 16, 107, 0.575); */
 }
 
 .title {
     font-size: 8em;
-    text-shadow: 1px 1px red;
-    color: whitesmoke;
+    text-shadow: 2px 2px rgb(82, 5, 82),
+    4px 4px rgb(131, 88, 131);
+    color: rgb(255, 199, 96);
     margin-bottom: 20px;
 }
 
@@ -30,6 +33,6 @@
     color: whitesmoke
 }
 
-.auth-menu a:first-child {
-    margin-right: 10px;
+.auth-menu .separator{
+    margin: 0 5px;
 }

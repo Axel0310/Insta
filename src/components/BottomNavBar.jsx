@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
@@ -9,31 +9,55 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import Avatar from '@material-ui/core/Avatar';
 import { withUser } from "../components/Auth/withUser";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
-    position: "fixed",
+    position: "sticky",
     bottom: 0,
     left: 0,
     width: "100%",
+    backgroundColor: "rgb(132, 210, 255)",
     "& .MuiBottomNavigationAction-root":{
-      minWidth: 60
-    }
+      color: "white",
+      minWidth: 40,
+    },
+    "& a:hover": {
+      color: "white",
+    },
   },
   profilePic: {
     borderRadius: "50%",
-    width: "2em",
+    width: "1.5em",
+    height: "1.5em"
   },
 });
 
-function LabelBottomNavigation(props) {
-  const { user } = props.context;
+function LabelBottomNavigation({context, location}) {
+  const { user } = context;
+  const {pathname} = location;
   const classes = useStyles();
-  const [value, setValue] = React.useState("recents");
+  const [value, setValue] = React.useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect( () => {
+    if(pathname === "/home"){
+      setValue("home");
+    } else if(pathname === "/search"){
+      setValue("search");
+    }else if(pathname === "/image/upload"){
+      setValue("upload");
+    }else if(pathname === "/notifications"){
+      setValue("activities");
+    }else if(pathname === `/profile/${user._id}` || pathname === `/profile/edit`){
+      setValue("profile");
+    } else {
+      setValue("");
+    }
+  }, [pathname])
 
   return (
     <BottomNavigation
@@ -65,17 +89,17 @@ function LabelBottomNavigation(props) {
         }
       />
       <BottomNavigationAction
-        label="Favorites"
-        value="favorites"
+        label="Activities"
+        value="activities"
         icon={<FavoriteIcon />}
       />
       <BottomNavigationAction
         label="Profile"
         value="profile"
-        icon={<Link to={`/profile/${user._id}`}><Avatar alt="Profil" src={user.profilePicture}/></Link>}
+        icon={<Link to={`/profile/${user._id}`}><Avatar alt="Profil" src={user.profilePicture} className={classes.profilePic}/></Link>}
       />
     </BottomNavigation>
   );
 }
 
-export default withUser(LabelBottomNavigation);
+export default withRouter(withUser(LabelBottomNavigation));

@@ -7,10 +7,11 @@ export default function WelcomePage() {
     <div className="welcome-page">
         <div className="auth-menu">
             <Link to="/auth/signin">Sign in</Link>
+            <span className="separator">|</span>
             <Link to="/auth/signup">Sign up</Link>
         </div>
       <div className="intro-wrapper">
-        <h1 className="title">Awesome</h1>
+        <h1 className="title">Pics-Art</h1>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima,
           ullam?

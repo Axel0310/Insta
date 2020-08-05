@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     // height: "7vh",
     backgroundColor: "rgb(132, 210, 255)",
     "& .title": {
-      fontSize: "3em",
+      fontSize: "4em",
       position: "absolute",
       left: "50%",
       top: "50%",
@@ -61,7 +61,7 @@ export default function Header(props) {
       <HideOnScroll {...props}>
         <AppBar className={classes.root}>
           <Toolbar>
-            <h1 className="title">Awesome</h1>
+            <h1 className="title">Pics-art</h1>
             <Link to="/chat" className="chat-link">
               <i className="fas fa-paper-plane"></i>
             </Link>

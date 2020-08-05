@@ -12,6 +12,16 @@
 }
 
 .profile-form .form-title{
-    font-size: 1.6em;
+    font-size: 2.5em;
     margin-bottom: 15px;
+    font-weight: bolder;
+}
+
+.profile-form button{
+    background-color: rgb(97, 36, 92);
+    color: white;
+}
+
+.profile-form a{
+    font-weight: bolder;
 }

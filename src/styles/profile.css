@@ -12,22 +12,29 @@
 }
 
 .user-info-header .info-wrapper {
+  display: flex;
+  flex-direction: column;
   width: 70%;
 }
 
 .user-info-header .user-name {
   font-size: 3em;
+  
 }
 
 .user-info .user-picture {
   width: 30%;
   border-radius: 50%;
   margin-right: 20px;
+  max-width: 150px;
 }
 
 .user-info-header .user-figures {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 300px;
 }
 
 .user-info-header .user-figures .figure {
@@ -51,5 +58,7 @@
 
 .user-images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  
 }

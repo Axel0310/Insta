@@ -1,35 +1,34 @@
 @font-face {
-    font-family: sweetSensation;
-    src: url("/fonts/sweetSensation.ttf");
+  font-family: chlakh;
+  src: url("/fonts/chlakh.ttf");
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 10px;
-    width: 100%;
-    height: 100vh;
+  font-family: Comfortaa, "Times New Roman", Times, serif;
+  font-size: 10px;
+  width: 100%;
+  height: 100vh;
 }
 
-h1{
-    font-family: sweetSensation;
+h1 {
+  font-family: chlakh;
 }
 
-a{
-    text-decoration: none;
-    color: inherit;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 #content {
-    padding-bottom: 50px;
-    margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+  min-height: 100vh;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
