@@ -4,7 +4,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ImageCard from "../components/ImageCard";
 import { withUser } from "../components/Auth/withUser";
 
- function ImagesCarousel({ match, context }) {
+function ImagesCarousel({ match, context }) {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,14 +25,28 @@ import { withUser } from "../components/Auth/withUser";
   const handleDelete = async (imgId) => {
     const updatedUser = await apiHandler.deleteImage(imgId);
     context.setUser(updatedUser);
-    setIsLoading(true);
-  }
+  };
+
+  const handleLike = async (likedImgId) => {
+    const updatedImage = await apiHandler.toggleLike(likedImgId);
+    setImages(images => {
+        const index = images.findIndex( img => img._id === likedImgId);
+        const newImages = [...images];
+        newImages[index] = updatedImage;
+        return newImages;
+    })
+  };
 
   if (isLoading) return <CircularProgress />;
   return (
     <React.Fragment>
       {images.map((currentImage) => (
-        <ImageCard key={currentImage._id} image={currentImage} clbkDelete={handleDelete}/>
+        <ImageCard
+          key={currentImage._id}
+          image={currentImage}
+          clbkDelete={handleDelete}
+          clbkLike={handleLike}
+        />
       ))}
     </React.Fragment>
   );

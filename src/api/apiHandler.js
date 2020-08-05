@@ -86,6 +86,13 @@ export default {
       .catch(errorHandler);
   },
 
+  toggleLike(imgId) {
+    return service
+      .patch(`/api/images/like/${imgId}`)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
   getUser(userId) {
     return service
       .get(`/api/users/${userId}`)

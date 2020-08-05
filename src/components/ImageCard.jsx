@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -28,10 +29,16 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 500,
+    "& .MuiCardActions-root":{
+      padding: 0
+    },
+    "& .MuiCardContent-root" : {
+      paddingTop: 0
+    }
   },
   media: {
     height: 0,
-    paddingTop: "56.25%",
+    paddingTop: "75%",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -45,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ImageCard({ image, context, clbkDelete }) {
+function ImageCard({ image, context, clbkDelete, clbkLike }) {
   const { creator, description, url } = image;
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -86,7 +93,11 @@ function ImageCard({ image, context, clbkDelete }) {
   }, [open]);
 
   const handleDelete = () => {
-    clbkDelete(image._id)
+    clbkDelete(image._id);
+  }
+
+  const handleLike = () => {
+    clbkLike(image._id);
   }
 
   const imageActionBtn = (
@@ -135,6 +146,7 @@ function ImageCard({ image, context, clbkDelete }) {
   );
 
   const imageIsFromConnectedUser = context.user.images.includes(image._id);
+  const imageIsLiked = image.likes.includes(context.user._id);
 
   return (
     <Card className={classes.root}>
@@ -148,16 +160,17 @@ function ImageCard({ image, context, clbkDelete }) {
         title={<Link to={`/profile/${creator._id}`}>{creator.name}</Link>}
       />
       <CardMedia className={classes.media} image={url} />
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites" onClick={handleLike}>
+          {imageIsLiked ? <FavoriteIcon /> : <FavoriteBorderIcon/>}
+        </IconButton>
+      </CardActions>
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {description}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-      </CardActions>
+      
 
       {/* Uncomment to implement display of image comments */}
 

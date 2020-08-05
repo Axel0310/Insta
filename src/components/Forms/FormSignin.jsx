@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import UserContext from "../Auth/UserContext";
 import { withRouter } from "react-router-dom";
 import apiHandler from "../../api/apiHandler";
+import { Link } from "react-router-dom";
 
 class FormSignin extends Component {
   static contextType = UserContext;
@@ -59,6 +60,7 @@ class FormSignin extends Component {
             <button className="button is-success">Validate</button>
           </p>
         </div>
+        <p>Don't have an account yet ? <Link to="/auth/signup">Sign up</Link> </p>
       </form>
     );
   }

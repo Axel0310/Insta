@@ -1,28 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import ImageCropping from "./ImageCropping";
+import EditIcon from "@material-ui/icons/Edit";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   input: {
     display: "none",
   },
   imageInputWrapper: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   imageMini: {
-      maxWidth: "100%",
-      maxHeight: "50vh"
+    maxWidth: "100%",
+    maxHeight: "50vh",
   },
-  hidden:{
-    display: "none"
-  }
-}));
+  hidden: {
+    display: "none",
+  },
+});
 
-export default function ImageInput({ clbk, tempUrl, isDisabled }) {
+export default function ImageInput({
+  clbkUpload,
+  clbkCrop,
+  tempUrl,
+  tempUrlCropped,
+  isDisabled,
+}) {
   const classes = useStyles();
+  const [cropToolDisplayed, setCropToolDisplayed] = useState(false);
+
+  useEffect(() => {
+    if (tempUrl !== "") setCropToolDisplayed(true);
+  }, [tempUrl]);
+
+  useEffect(() => {
+    if (tempUrlCropped !== "") setCropToolDisplayed(false);
+  }, [tempUrlCropped]);
+
+  const diplayCroppingTool = () => {
+    setCropToolDisplayed(true);
+  };
+
   return (
     <div className={classes.imageInputWrapper}>
       <input
@@ -31,10 +53,13 @@ export default function ImageInput({ clbk, tempUrl, isDisabled }) {
         id="contained-button-file"
         multiple
         type="file"
-        onChange={clbk}
+        onChange={clbkUpload}
         required
       />
-      <label htmlFor="contained-button-file" className={isDisabled ? classes.hidden : undefined}>
+      <label
+        htmlFor="contained-button-file"
+        className={isDisabled ? classes.hidden : undefined}
+      >
         <Button
           variant="contained"
           color="primary"
@@ -44,7 +69,19 @@ export default function ImageInput({ clbk, tempUrl, isDisabled }) {
           Upload
         </Button>
       </label>
-      {tempUrl && <img src={tempUrl} alt="Upload" className={classes.imageMini} />}
+      {tempUrlCropped !== "" && !cropToolDisplayed && (
+        <React.Fragment>
+          <EditIcon onClick={diplayCroppingTool} />
+          <img
+            src={tempUrlCropped}
+            alt="Upload"
+            className={classes.imageMini}
+          />
+        </React.Fragment>
+      )}
+      {cropToolDisplayed && (
+        <ImageCropping imgUrl={tempUrl} clbkCrop={clbkCrop} />
+      )}
     </div>
   );
 }

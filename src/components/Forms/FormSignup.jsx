@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import UserContext from "../Auth/UserContext";
 import apiHandler from "../../api/apiHandler";
+import { Link } from "react-router-dom";
 import "../../styles/profileForm.css";
 
 class FormSignup extends Component {
@@ -67,6 +68,7 @@ class FormSignup extends Component {
             <button className="button is-success">Sign up</button>
           </p>
         </div>
+        <p>Already have an account ? <Link to="/auth/signin">Sign in</Link> </p>
       </form>
     );
   }

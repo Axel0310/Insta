@@ -19,13 +19,14 @@ const useStyles = makeStyles({
   formTitle: {
     fontSize: "1.8em",
     fontWeight: "bolder",
-  },
+  }
 });
 
 const ImageForm = (props) => {
   const classes = useStyles();
 
   const [tempUrl, setTempUrl] = useState("");
+  const [tempUrlCropped, setTempUrlCropped] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
 
@@ -48,8 +49,13 @@ const ImageForm = (props) => {
 
   const handleUpload = (evt) => {
     setTempUrl(URL.createObjectURL(evt.target.files[0]));
-    setImage(evt.target.files[0]);
+    // setImage(evt.target.files[0]);
   };
+
+  const handleCropValidation = (croppedImage) => {
+    setTempUrlCropped(URL.createObjectURL(croppedImage));
+    setImage(croppedImage);
+  }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -68,7 +74,7 @@ const ImageForm = (props) => {
         });
     } else if (mode === "edit") {
       apiHandler
-        .updateImage(imageId, {description: description})
+        .updateImage(imageId, { description: description })
         .then((image) => {
           props.history.push("/home");
         })
@@ -85,7 +91,9 @@ const ImageForm = (props) => {
       </h2>
       <ImageInput
         tempUrl={tempUrl}
-        clbk={handleUpload}
+        tempUrlCropped={tempUrlCropped}
+        clbkUpload={handleUpload}
+        clbkCrop={handleCropValidation}
         isDisabled={mode === "edit"}
       />
       <TextField
