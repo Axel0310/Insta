@@ -5,6 +5,7 @@ import ImageInput from "../ImageInput";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import DoneIcon from "@material-ui/icons/Done";
+import Backdrop from "../Backdrop";
 
 const useStyles = makeStyles({
   root: {
@@ -12,14 +13,15 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
-    "& *": {
+    marginTop: "20px",
+    "& > *": {
       marginBottom: "10px",
     },
   },
   formTitle: {
     fontSize: "1.8em",
     fontWeight: "bolder",
-  }
+  },
 });
 
 const ImageForm = (props) => {
@@ -28,7 +30,8 @@ const ImageForm = (props) => {
   const [tempUrl, setTempUrl] = useState("");
   const [tempUrlCropped, setTempUrlCropped] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const mode = props.match.params.mode;
   const imageId = props.match.params.id;
@@ -39,26 +42,31 @@ const ImageForm = (props) => {
         .getImage(imageId)
         .then((image) => {
           setTempUrl(image.url);
+          setTempUrlCropped(image.url);
           setDescription(image.description);
         })
         .catch((error) => {
           console.log(error.message);
         });
     }
+    return () => {
+      setLoading(false);
+    }
   }, []);
 
   const handleUpload = (evt) => {
     setTempUrl(URL.createObjectURL(evt.target.files[0]));
-    // setImage(evt.target.files[0]);
   };
 
   const handleCropValidation = (croppedImage) => {
     setTempUrlCropped(URL.createObjectURL(croppedImage));
     setImage(croppedImage);
-  }
+  };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    
+    setLoading(true);
 
     if (mode === "upload") {
       const fd = new FormData();
@@ -85,36 +93,43 @@ const ImageForm = (props) => {
   };
 
   return (
-    <form className={classes.root}>
-      <h2 className={classes.formTitle}>
-        {mode === "upload" ? "Upload an image" : "Edit image"}
-      </h2>
-      <ImageInput
-        tempUrl={tempUrl}
-        tempUrlCropped={tempUrlCropped}
-        clbkUpload={handleUpload}
-        clbkCrop={handleCropValidation}
-        isDisabled={mode === "edit"}
-      />
-      <TextField
-        id="outlined-multiline-static"
-        label="Description"
-        multiline
-        rows={4}
-        variant="outlined"
-        value={description}
-        onChange={(evt) => setDescription(evt.target.value)}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        endIcon={<DoneIcon />}
-        onClick={handleSubmit}
-      >
-        Send
-      </Button>
-    </form>
+    <React.Fragment>
+      {loading && <Backdrop loading={loading} />}
+      <form className={classes.root}>
+        <h2 className={classes.formTitle}>
+          {mode === "upload" ? "Upload an image" : "Edit image"}
+        </h2>
+        <ImageInput
+          tempUrl={tempUrl}
+          tempUrlCropped={tempUrlCropped}
+          clbkUpload={handleUpload}
+          clbkCrop={handleCropValidation}
+          isDisabled={mode === "edit"}
+        />
+        {image !== null && (
+          <React.Fragment>
+            <TextField
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              rows={4}
+              variant="outlined"
+              value={description}
+              onChange={(evt) => setDescription(evt.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<DoneIcon />}
+              onClick={handleSubmit}
+            >
+              Send
+            </Button>
+          </React.Fragment>
+        )}
+      </form>
+    </React.Fragment>
   );
 };
 

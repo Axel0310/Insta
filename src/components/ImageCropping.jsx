@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginTop: "20px",
   },
   cropWrapper: {
     position: "relative",
@@ -63,7 +64,7 @@ async function getCroppedImg(imageSrc, pixelCrop) {
   });
 }
 
-export default function ImageCropping({ imgUrl, clbkCrop }) {
+export default function ImageCropping({ imgUrl, clbkCrop, round }) {
   const classes = useStyles();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -89,10 +90,11 @@ export default function ImageCropping({ imgUrl, clbkCrop }) {
           image={imgUrl}
           crop={crop}
           zoom={zoom}
-          aspect={4 / 3}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}
+          aspect={round ? 1 : 4 / 3}
+          cropShape={round ? "round" : "rect"}
         />
       </div>
       <Grid container spacing={2} className={classes.slider}>

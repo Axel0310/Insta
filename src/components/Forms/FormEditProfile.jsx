@@ -13,10 +13,27 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { makeStyles } from "@material-ui/core/styles";
+import ImageCropping from "../ImageCropping";
+import Backdrop from "../Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
+  },
+  editProfileForm: {
+    width: "80%",
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "500px",
+    marginTop: "20px",
+    "& > *": {
+      marginBottom: "10px",
+    },
+  },
+  formTitle: {
+    alignSelf: "center",
+    fontSize: "1.8em",
+    fontWeight: "bolder",
   },
   imageInputWrapper: {
     display: "flex",
@@ -24,11 +41,13 @@ const useStyles = makeStyles((theme) => ({
   },
   imageMini: {
     width: "20vw",
-    height: "20vw",
+    maxWidth: "120ox",
     borderRadius: "50%",
-    backgroundPosition: "center",
-    backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
+    marginRight: "20px",
+  },
+  validateBtn: {
+    width: "50%",
+    alignSelf: "center",
   },
 }));
 
@@ -38,6 +57,9 @@ function FormEditProfile({ context, history }) {
   const [isLoading, setIsLoading] = useState(true);
   const [inputs, setInputs] = useState({});
   const [tempUrl, setTempUrl] = useState("");
+  const [tempUrlCropped, setTempUrlCropped] = useState("");
+  const [cropToolDisplayed, setCropToolDisplayed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { user, setUser } = context;
 
@@ -48,23 +70,20 @@ function FormEditProfile({ context, history }) {
       setTempUrl(profilePicture);
       setIsLoading(false);
     });
+    return () => {
+      setLoading(false);
+    };
   }, []);
 
   const handleInputsChange = (evt) => {
     evt.persist();
-    let value = null;
-    if (evt.target.type === "file") {
-      const uploadedImage = evt.target.files[0];
-      setTempUrl(URL.createObjectURL(uploadedImage));
-      value = uploadedImage;
-    } else {
-      value = evt.target.value;
-    }
-    setInputs((inputs) => ({ ...inputs, [evt.target.name]: value }));
+    setInputs((inputs) => ({ ...inputs, [evt.target.name]: evt.target.value }));
   };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+
+    setLoading(true);
 
     const fd = new FormData();
     for (let key in inputs) {
@@ -76,7 +95,7 @@ function FormEditProfile({ context, history }) {
     const res = await apiHandler.updateUser(fd);
     if (!res.message) {
       setUser(res);
-      history.push(`/profile/${user._id}`)
+      history.push(`/profile/${user._id}`);
     }
   };
 
@@ -88,90 +107,114 @@ function FormEditProfile({ context, history }) {
     event.preventDefault();
   };
 
+  const handleCropValidation = (croppedImage) => {
+    setTempUrl(URL.createObjectURL(croppedImage));
+    setInputs((inputs) => ({ ...inputs, profilePicture: croppedImage }));
+    setCropToolDisplayed(false);
+  };
+
+  const handleUpload = (event) => {
+    setTempUrlCropped(URL.createObjectURL(event.target.files[0]));
+    setCropToolDisplayed(true);
+  };
+
   if (isLoading) return <CircularProgress />;
   return (
-    <form className="form-edit-profil">
-      <h2>Edit profile</h2>
+    <React.Fragment>
+      {loading && <Backdrop loading={loading} />}
+      <form className={classes.editProfileForm}>
+        <h2 className={classes.formTitle}>Edit profile</h2>
 
-      <div className={classes.imageInputWrapper}>
-        <div
-          style={{ backgroundImage: `url(${tempUrl})` }}
-          className={classes.imageMini}
-        ></div>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-          name="profilePicture"
-          onChange={handleInputsChange}
-        />
-        <label htmlFor="contained-button-file">
-          <Button
-            variant="contained"
-            color="primary"
-            component="span"
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload
-          </Button>
-        </label>
-      </div>
+        <div className={classes.imageInputWrapper}>
+          <img src={tempUrl} alt="Profile" className={classes.imageMini} />
+          <input
+            accept="image/*"
+            className={classes.input}
+            id="contained-button-file"
+            multiple
+            type="file"
+            name="profilePicture"
+            onChange={handleUpload}
+          />
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              startIcon={<CloudUploadIcon />}
+            >
+              Edit picture
+            </Button>
+          </label>
+        </div>
 
-      <TextField
-        required
-        label="Name"
-        name="name"
-        onChange={handleInputsChange}
-        value={inputs.name}
-      />
+        {cropToolDisplayed && (
+          <ImageCropping
+            imgUrl={tempUrlCropped}
+            clbkCrop={handleCropValidation}
+            round={true}
+          />
+        )}
 
-      <TextField
-        id="outlined-multiline-static"
-        label="Description"
-        multiline
-        rowsMax={4}
-        name="description"
-        onChange={handleInputsChange}
-        value={inputs.description}
-      />
-
-      <TextField
-        required
-        label="Email"
-        name="email"
-        onChange={handleInputsChange}
-        value={inputs.email}
-      />
-
-      <FormControl>
-        <InputLabel htmlFor="password">New Password</InputLabel>
-        <Input
-          onChange={handleInputsChange}
-          name="password"
+        <TextField
           required
-          id="password"
-          type={showPassword ? "text" : "password"}
-          value={inputs.password}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
+          label="Name"
+          name="name"
+          onChange={handleInputsChange}
+          value={inputs.name}
         />
-      </FormControl>
 
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        Validate
-      </Button>
-    </form>
+        <TextField
+          id="outlined-multiline-static"
+          label="Description"
+          multiline
+          rowsMax={4}
+          name="description"
+          onChange={handleInputsChange}
+          value={inputs.description}
+        />
+
+        <TextField
+          required
+          label="Email"
+          name="email"
+          onChange={handleInputsChange}
+          value={inputs.email}
+        />
+
+        <FormControl>
+          <InputLabel htmlFor="password">New Password</InputLabel>
+          <Input
+            onChange={handleInputsChange}
+            name="password"
+            required
+            id="password"
+            type={showPassword ? "text" : "password"}
+            value={inputs.password}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          className={classes.validateBtn}
+        >
+          Validate
+        </Button>
+      </form>
+    </React.Fragment>
   );
 }
 

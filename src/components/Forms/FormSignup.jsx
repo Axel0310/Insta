@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import UserContext from "../Auth/UserContext";
 import apiHandler from "../../api/apiHandler";
 import { Link } from "react-router-dom";
-import "../../styles/profileForm.css";
+import "../../styles/authForm.css";
 
 class FormSignup extends Component {
   static contextType = UserContext;

@@ -13,14 +13,24 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    width: "100vw"
   },
   imageMini: {
-    maxWidth: "100%",
-    maxHeight: "50vh",
+    width: "100%",
+    marginTop: "20px",
   },
   hidden: {
     display: "none",
   },
+  btnWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "60%",
+  },
+  editBtn: {
+    marginLeft: "20px",
+  }
 });
 
 export default function ImageInput({
@@ -56,28 +66,28 @@ export default function ImageInput({
         onChange={clbkUpload}
         required
       />
-      <label
-        htmlFor="contained-button-file"
-        className={isDisabled ? classes.hidden : undefined}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          component="span"
-          startIcon={<CloudUploadIcon />}
+      <div className={classes.btnWrapper}>
+        <label
+          htmlFor="contained-button-file"
+          className={isDisabled ? classes.hidden : undefined, classes.uploadBtn}
         >
-          Upload
-        </Button>
-      </label>
+          <Button
+            variant="contained"
+            color="primary"
+            component="span"
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload
+          </Button>
+        </label>
+        {tempUrlCropped !== "" &&
+          !cropToolDisplayed &&
+          tempUrlCropped !== tempUrl && (
+            <EditIcon onClick={diplayCroppingTool} className={classes.editBtn} />
+          )}
+      </div>
       {tempUrlCropped !== "" && !cropToolDisplayed && (
-        <React.Fragment>
-          <EditIcon onClick={diplayCroppingTool} />
-          <img
-            src={tempUrlCropped}
-            alt="Upload"
-            className={classes.imageMini}
-          />
-        </React.Fragment>
+        <img src={tempUrlCropped} alt="Upload" className={classes.imageMini} />
       )}
       {cropToolDisplayed && (
         <ImageCropping imgUrl={tempUrl} clbkCrop={clbkCrop} />
