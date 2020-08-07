@@ -52,7 +52,7 @@ const ImageForm = (props) => {
     return () => {
       setLoading(false);
     }
-  },);
+  }, []);
 
   const handleUpload = (evt) => {
     setTempUrl(URL.createObjectURL(evt.target.files[0]));
