@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     width: "4em",
     maxWidth: "100px",
     marginRight: "10px",
+    borderRadius: "50%"
   },
   msg:{
       alignSelf: "center",
