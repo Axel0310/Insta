@@ -52,7 +52,7 @@ const ImageForm = (props) => {
     return () => {
       setLoading(false);
     }
-  }, []);
+  },);
 
   const handleUpload = (evt) => {
     setTempUrl(URL.createObjectURL(evt.target.files[0]));
@@ -92,6 +92,8 @@ const ImageForm = (props) => {
     }
   };
 
+  const displayValidation = (image !== null || mode === "edit");
+
   return (
     <React.Fragment>
       {loading && <Backdrop loading={loading} />}
@@ -106,7 +108,7 @@ const ImageForm = (props) => {
           clbkCrop={handleCropValidation}
           isDisabled={mode === "edit"}
         />
-        {image !== null && (
+        {displayValidation && (
           <React.Fragment>
             <TextField
               id="outlined-multiline-static"
@@ -124,7 +126,7 @@ const ImageForm = (props) => {
               endIcon={<DoneIcon />}
               onClick={handleSubmit}
             >
-              Send
+              Validate
             </Button>
           </React.Fragment>
         )}

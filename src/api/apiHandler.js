@@ -100,6 +100,13 @@ export default {
       .catch(errorHandler);
   },
 
+  searchUser(userName) {
+    return service
+      .get(`/api/users/search/${userName}`)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
   updateUser(inputs) {
     return service
       .patch(`/api/users`, inputs)
@@ -110,6 +117,13 @@ export default {
   updateSubs(connectedUserId, profileUserId){
     return service
     .patch("/api/users/follow", {connectedUserId: connectedUserId, profileUserId: profileUserId})
+    .then( res => res.data)
+    .catch(errorHandler);
+  },
+
+  getNotifications(){
+    return service
+    .get("/api/users/notifications")
     .then( res => res.data)
     .catch(errorHandler);
   }

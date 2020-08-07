@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
@@ -6,7 +6,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchIcon from "@material-ui/icons/Search";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 import { withUser } from "../components/Auth/withUser";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     left: 0,
     width: "100%",
     backgroundColor: "rgb(132, 210, 255)",
-    "& .MuiBottomNavigationAction-root":{
+    "& .MuiBottomNavigationAction-root": {
       color: "white",
       minWidth: 40,
     },
@@ -29,13 +29,13 @@ const useStyles = makeStyles({
   profilePic: {
     borderRadius: "50%",
     width: "1.5em",
-    height: "1.5em"
+    height: "1.5em",
   },
 });
 
-function LabelBottomNavigation({context, location}) {
+function LabelBottomNavigation({ context, location }) {
   const { user } = context;
-  const {pathname} = location;
+  const { pathname } = location;
   const classes = useStyles();
   const [value, setValue] = React.useState("");
 
@@ -43,21 +43,24 @@ function LabelBottomNavigation({context, location}) {
     setValue(newValue);
   };
 
-  useEffect( () => {
-    if(pathname === "/home"){
+  useEffect(() => {
+    if (pathname === "/home") {
       setValue("home");
-    } else if(pathname === "/search"){
+    } else if (pathname === "/search") {
       setValue("search");
-    }else if(pathname === "/image/upload"){
+    } else if (pathname === "/image/upload") {
       setValue("upload");
-    }else if(pathname === "/notifications"){
+    } else if (pathname === "/notifications") {
       setValue("activities");
-    }else if(pathname === `/profile/${user._id}` || pathname === `/profile/edit`){
+    } else if (
+      pathname === `/profile/${user._id}` ||
+      pathname === `/profile/edit`
+    ) {
       setValue("profile");
     } else {
       setValue("");
     }
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <BottomNavigation
@@ -77,7 +80,11 @@ function LabelBottomNavigation({context, location}) {
       <BottomNavigationAction
         label="Search"
         value="search"
-        icon={<SearchIcon />}
+        icon={
+          <Link to="/search">
+            <SearchIcon />
+          </Link>
+        }
       />
       <BottomNavigationAction
         label="Upload"
@@ -91,12 +98,24 @@ function LabelBottomNavigation({context, location}) {
       <BottomNavigationAction
         label="Activities"
         value="activities"
-        icon={<FavoriteIcon />}
+        icon={
+          <Link to="/notifications">
+            <FavoriteIcon />
+          </Link>
+        }
       />
       <BottomNavigationAction
         label="Profile"
         value="profile"
-        icon={<Link to={`/profile/${user._id}`}><Avatar alt="Profil" src={user.profilePicture} className={classes.profilePic}/></Link>}
+        icon={
+          <Link to={`/profile/${user._id}`}>
+            <Avatar
+              alt="Profil"
+              src={user.profilePicture}
+              className={classes.profilePic}
+            />
+          </Link>
+        }
       />
     </BottomNavigation>
   );

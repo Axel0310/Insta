@@ -69,7 +69,7 @@ export default function ImageInput({
       <div className={classes.btnWrapper}>
         <label
           htmlFor="contained-button-file"
-          className={isDisabled ? classes.hidden : undefined, classes.uploadBtn}
+          className={isDisabled ? classes.hidden : undefined}
         >
           <Button
             variant="contained"

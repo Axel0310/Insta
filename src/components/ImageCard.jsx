@@ -11,7 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -29,12 +29,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 500,
-    "& .MuiCardActions-root":{
-      padding: 0
+    "& .MuiCardActions-root": {
+      padding: 0,
     },
-    "& .MuiCardContent-root" : {
-      paddingTop: 0
-    }
+    "& .MuiCardContent-root": {
+      paddingTop: 0,
+    },
   },
   media: {
     height: 0,
@@ -94,11 +94,11 @@ function ImageCard({ image, context, clbkDelete, clbkLike }) {
 
   const handleDelete = () => {
     clbkDelete(image._id);
-  }
+  };
 
   const handleLike = () => {
     clbkLike(image._id);
-  }
+  };
 
   const imageActionBtn = (
     <React.Fragment>
@@ -116,6 +116,7 @@ function ImageCard({ image, context, clbkDelete, clbkLike }) {
         role={undefined}
         transition
         disablePortal
+        placement="bottom-end"
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -146,7 +147,24 @@ function ImageCard({ image, context, clbkDelete, clbkLike }) {
   );
 
   const imageIsFromConnectedUser = context.user.images.includes(image._id);
-  const imageIsLiked = image.likes.includes(context.user._id);
+  // const imageIsLiked = image.likes.includes(context.user._id);
+  const imageIsLiked = image.likes.reduce((isLiked, user) => {
+    if (user._id == context.user._id) return true;
+    else return isLiked;
+  }, false);
+  let likesDisplay = "Liked by ";
+
+  if (image.likes.length !== 0) {
+    if (image.likes.length === 1) {
+      likesDisplay += `${image.likes[0].name}`;
+    } else if (image.likes.length === 2) {
+      likesDisplay += `${image.likes[0].name} and ${image.likes[1].name}`;
+    } else {
+      likesDisplay += `${image.likes[0].name}, ${image.likes[1].name} and ${
+        image.likes.length - 2
+      } other${image.likes.length - 2 > 1 ? "s" : ""}`;
+    }
+  }
 
   return (
     <Card className={classes.root}>
@@ -162,15 +180,15 @@ function ImageCard({ image, context, clbkDelete, clbkLike }) {
       <CardMedia className={classes.media} image={url} />
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={handleLike}>
-          {imageIsLiked ? <FavoriteIcon /> : <FavoriteBorderIcon/>}
+          {imageIsLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
+        {image.likes.length !== 0 && <p>{likesDisplay}</p>}
       </CardActions>
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {description}
         </Typography>
       </CardContent>
-      
 
       {/* Uncomment to implement display of image comments */}
 
