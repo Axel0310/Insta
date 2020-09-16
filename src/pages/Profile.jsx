@@ -6,7 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 import "../styles/profile.css";
 
-const Profile = ({context, match, history}) => {
+const Profile = ({ context, match, history }) => {
   const [profileUser, setProfileUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,21 +20,25 @@ const Profile = ({context, match, history}) => {
   }, [match]);
 
   const handleFollow = async () => {
-    const { updatedConnectedUser, updatedProfileUser} = await apiHandler.updateSubs(connectedUser._id, profileUser._id);
+    const {
+      updatedConnectedUser,
+      updatedProfileUser,
+    } = await apiHandler.updateSubs(connectedUser._id, profileUser._id);
     setProfileUser(updatedProfileUser);
     context.setUser(updatedConnectedUser);
   };
 
   const handleSignOut = () => {
-    apiHandler.logout()
-    .then( res => {
-      context.removeUser();
-      history.push("/");
-    })
-    .catch( error => {
-      console.log(error)
-    })
-  }
+    apiHandler
+      .logout()
+      .then((res) => {
+        context.removeUser();
+        history.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   if (isLoading) return <CircularProgress />;
   return (
@@ -65,12 +69,16 @@ const Profile = ({context, match, history}) => {
           </div>
         </div>
         <p className="user-description">{profileUser.description}</p>
-        <ProfilActions profileUser={profileUser} clbkFollow={handleFollow} clbkSignOut={handleSignOut}/>
+        <ProfilActions
+          profileUser={profileUser}
+          clbkFollow={handleFollow}
+          clbkSignOut={handleSignOut}
+        />
       </section>
       <section className="user-images">
         {profileUser.images.map((image) => (
           <Link to={`/profile/images/${match.params.id}`} key={image._id}>
-          <img src={image.url} alt="Publication" className="publication" />
+            <img src={image.url} alt="Publication" className="publication" />
           </Link>
         ))}
       </section>

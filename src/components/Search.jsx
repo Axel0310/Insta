@@ -78,7 +78,7 @@ function Search({ context }) {
 
   const userCard = (user) => {
     return (
-      <Link to={`/profile/${user._id}`}>
+      <Link key={user._id} to={`/profile/${user._id}`}>
         <Paper elevation={3} className={classes.userCard}>
           <img
             src={user.profilePicture}

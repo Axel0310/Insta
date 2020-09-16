@@ -15,6 +15,9 @@ import Search from "./components/Search";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Notifications from "./pages/Notifications";
+import ChatLobby from "./pages/ChatLobby";
+import ChatRoom from "./pages/ChatRoom";
+
 
 function App(props) {
   // const [displayMsg, setDisplayMsg] = React.useState(false);
@@ -71,6 +74,8 @@ function App(props) {
           />
           <ProtectedRoute exact path="/search" component={Search} />
           <ProtectedRoute exact path="/notifications" component={Notifications} />
+          <ProtectedRoute exact path="/chat" component={ChatLobby} />
+          <ProtectedRoute exact path="/chat/:id" component={ChatRoom} />
         </Switch>
       </main>
       {user && <BottomNavBar />}

@@ -114,17 +114,27 @@ export default {
       .catch(errorHandler);
   },
 
-  updateSubs(connectedUserId, profileUserId){
+  updateSubs(connectedUserId, profileUserId) {
     return service
-    .patch("/api/users/follow", {connectedUserId: connectedUserId, profileUserId: profileUserId})
-    .then( res => res.data)
-    .catch(errorHandler);
+      .patch("/api/users/follow", {
+        connectedUserId: connectedUserId,
+        profileUserId: profileUserId,
+      })
+      .then((res) => res.data)
+      .catch(errorHandler);
   },
 
-  getNotifications(){
+  getNotifications() {
     return service
-    .get("/api/users/notifications")
-    .then( res => res.data)
-    .catch(errorHandler);
-  }
+      .get("/api/users/notifications")
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  getFriends() {
+    return service
+      .get("/api/users/friends")
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
 };

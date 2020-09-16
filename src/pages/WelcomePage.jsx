@@ -13,13 +13,7 @@ export default function WelcomePage() {
       <div className="intro-wrapper">
         <h1 className="title">Pics-Art</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima,
-          ullam?
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur
-          deleniti sint facilis nesciunt sapiente non tempora odit? Libero,
-          deleniti incidunt.
+          A not-so-innovative social media to share pictures with your friends !
         </p>
       </div>
     </div>
